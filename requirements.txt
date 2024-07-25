@@ -1,0 +1,4 @@
+datetime
+PIL
+customtkinter
+os
