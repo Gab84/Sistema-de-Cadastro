@@ -129,24 +129,26 @@ class MenuUser:
     def sair(self):
         #self.adicionar_anotacao()
         self.janela.destroy()
-    
-    def visualizar_anotacoes(self):
 
-        self.anotimg = CTkImage(light_image=Image.open("./images/imgnotas.png"),dark_image=Image.open("./images/imgnotas.png"),size=(645,315))
-        self.lbanotimg = CTkLabel(master=self.frameanota,image=self.anotimg,text=None)
-        self.lbanotimg.place(x=0,y=0)
+    def visualizar_anotacoes(self):
+        self.anotimg = CTkImage(light_image=Image.open("./images/imgnotas.png"),
+                                dark_image=Image.open("./images/imgnotas.png"), size=(645, 315))
+        self.lbanotimg = CTkLabel(master=self.frameanota, image=self.anotimg, text=None)
+        self.lbanotimg.place(x=0, y=0)
         
         self.imgbtnvoltar = "./Bottoes Img/imgbtnvoltar.png"
         self.imgbtnvoltarhover = "./Bottoes Img/hover_img/imgbtnvoltarhover.png"
         
         ImageHoverButton(master=self.lbanotimg,
-                             image_path=self.imgbtnvoltar,
-                             hover_image_path=self.imgbtnvoltarhover,
-                             command=self.abrir,fg_color="#9F91F2").place(x=540,y=60)
-
+                        image_path=self.imgbtnvoltar,
+                        hover_image_path=self.imgbtnvoltarhover,
+                        command=self.abrir, fg_color="#9F91F2").place(x=540, y=60)
         
-        self.anotacoes = CTkTextbox(master=self.lbanotimg,height=185,width=400,text_color="black",scrollbar_button_color="blue",activate_scrollbars=True,scrollbar_button_hover_color="green",state="disabled",fg_color="#FFF3DC",bg_color="#FFF3DC")
-        self.anotacoes.place(x=75,y=100)
+        self.anotacoes = CTkTextbox(master=self.lbanotimg, height=185, width=400, text_color="black",
+                                    scrollbar_button_color="blue", activate_scrollbars=True,
+                                    scrollbar_button_hover_color="green", state="disabled", 
+                                    fg_color="#FFF3DC", bg_color="#FFF3DC")
+        self.anotacoes.place(x=75, y=100)
         
         try:
             with open(f"./dir_anotacoes/{self.username}_anotacoes.txt", "r") as file:
@@ -159,29 +161,36 @@ class MenuUser:
             print("Arquivo de anotações não encontrado!")
 
 
+
     def adicionar_anotacao(self):
         data_hora_atual = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         anotacao = self.anotacao.get("1.0", "end-1c")
         self.anotacao.delete("1.0", "end-1c")
+        
         # Contar o número de anotações existentes
         if os.path.exists(f"./dir_anotacoes/{self.username}_anotacoes.txt"):
             with open(f"./dir_anotacoes/{self.username}_anotacoes.txt", "r") as file:
                 linhas = file.readlines()
-            numero_anotacao = len(linhas) + 1
+
+            # Filtrar as linhas que contêm "anotação de número" para contar o número exato de anotações
+            numero_anotacao = sum(1 for linha in linhas if "anotação de número" in linha) + 1
         else:
             numero_anotacao = 1
         
-            # Formatar a anotação
-        anotacao_formatada = f"{data_hora_atual} - anotação de número {numero_anotacao} - {anotacao}"
-    
+        # Formatar a anotação com espaçamento e uma divisória
+        anotacao_formatada = f"{data_hora_atual} - anotação de número {numero_anotacao} -- {anotacao}\n{'-'*50}\n\n"
+        
         with open(f"./dir_anotacoes/{self.username}_anotacoes.txt", "a") as file:
-            file.write(anotacao_formatada + "/n")
-        print("Anotação adicionada com sucesso!")
+            file.write(anotacao_formatada)
+        
+        print(f"Anotação de número {numero_anotacao} adicionada com sucesso!")
+
+
         
 
-# sim = MenuUser("gabs")
+"""sim = MenuUser("adm")
 
-# sim.abrir()
+sim.abrir()"""
 
 
 
